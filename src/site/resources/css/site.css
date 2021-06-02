@@ -1,0 +1,9 @@
+/* You can override this file with your own styles */
+h2 {
+  padding: 4px 4px 4px 6px;
+  border: 1px solid #999;
+  color: #900;
+  background-color: #ddd;
+  font-weight:#F9A51C;
+  font-size: x-large;
+}

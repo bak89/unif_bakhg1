@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+							 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>ch.bfh.ti</groupId>
+  <artifactId>unif</artifactId>
+  <version>0.0.1</version>
+  <packaging>jar</packaging>
+  <name>Unification</name>
+  <description>Implementation of the Robinson unification algorithm</description>
+
+  <url>http://maven.apache.org</url>
+
+  <developers>
+    <developer>
+      <id>beo1</id>
+      <name>Olivier Biberstein</name>
+      <email>olivier.biberstein@bfh.ch</email>
+      <organization>BFH-TI</organization>
+      <organizationUrl>http://www.ti.bfh.ch/</organizationUrl>
+      <roles>
+        <role>Lecturer</role>
+      </roles>
+      <timezone>+1</timezone>
+    </developer>
+    <developer>
+      <id>bakhg1</id>
+      <name>Giorgio Bakhiet Derias</name>
+      <email>bakhg1@bfh.ch</email>
+      <organization>BFH-TI</organization>
+      <organizationUrl>http://www.ti.bfh.ch/</organizationUrl>
+      <roles>
+        <role>Student</role>
+      </roles>
+      <timezone>+1</timezone>
+    </developer>
+    <developer>
+      <id>kurzel</id> 
+      <name>first name last name</name>
+      <email>email addresse</email>
+      <organization>BFH-TI</organization>
+      <organizationUrl>http://www.ti.bfh.ch/</organizationUrl>
+      <roles>
+        <role>Student</role>
+      </roles>
+      <timezone>+1</timezone>
+    </developer>
+  </developers>
+
+  <properties>
+	<main.class>ch.bfh.ti.unif.App</main.class>
+	<argument.list>arg1 arg2 arg3</argument.list>
+    <maven.compiler.source>11</maven.compiler.source>
+    <maven.compiler.target>11</maven.compiler.target>
+    <encoding>UTF-8</encoding>
+    <scala.version>2.13.5</scala.version>
+	<scala.compat.version>2.13</scala.compat.version>
+	<exec.maven.version>3.0.0</exec.maven.version>
+	<net.alchim31.version>4.5.1</net.alchim31.version>
+	<maven.assembly.version>3.3.0</maven.assembly.version>
+	<maven.site.version>3.7.1</maven.site.version>
+	<maven.project.info.version>3.0.0</maven.project.info.version>
+	<scalatest.version>3.2.7</scalatest.version>
+	<scalactic.version>3.2.7</scalactic.version>
+  </properties>
+  
+  <dependencies>
+    <dependency>
+      <groupId>org.scala-lang</groupId>
+      <artifactId>scala-library</artifactId>
+      <version>${scala.version}</version>
+    </dependency>
+	
+	<dependency>
+      <groupId>org.scalatest</groupId>
+      <artifactId>scalatest_${scala.compat.version}</artifactId>
+      <version>${scalatest.version}</version>
+      <scope>test</scope>
+	</dependency>
+
+	<dependency>
+	  <groupId>org.scalactic</groupId>
+	  <artifactId>scalactic_${scala.compat.version}</artifactId>
+	  <version>${scalactic.version}</version>
+	</dependency>
+
+  </dependencies>
+  
+  <build>
+    <plugins>
+
+      <plugin>
+        <groupId>net.alchim31.maven</groupId>
+        <artifactId>scala-maven-plugin</artifactId>
+		<version>${net.alchim31.version}</version>
+        <executions>
+          <execution>
+            <id>scala-compile-first</id>
+            <phase>process-resources</phase>
+            <goals>
+              <goal>add-source</goal>
+              <goal>compile</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>scala-test-compile</id>
+            <phase>process-test-resources</phase>
+            <goals>
+              <goal>testCompile</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!-- Create a single jar with all dependencies -->
+      <plugin>
+		<groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <version>${maven.assembly.version}</version>
+        <configuration>
+          <descriptorRefs>
+            <descriptorRef>jar-with-dependencies</descriptorRef>
+          </descriptorRefs>
+		  <archive>
+			<manifest>
+			  <mainClass>${main.class}</mainClass>
+			</manifest>
+		  </archive>
+        </configuration>
+        <executions>
+          <execution>
+            <id>make-assembly</id>
+            <phase>package</phase>
+            <goals>
+              <goal>single</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+	  <!-- Scalatest but disable surefire -->
+	  <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>2.21.0</version>
+        <configuration>
+          <skipTests>true</skipTests>
+        </configuration>
+      </plugin>
+	  <plugin>
+        <groupId>org.scalatest</groupId>
+        <artifactId>scalatest-maven-plugin</artifactId>
+        <version>2.0.0</version>
+        <configuration>
+          <reportsDirectory>${project.build.directory}/surefire-reports</reportsDirectory>
+          <junitxml>.</junitxml>
+          <filereports>TestSuiteReport.txt</filereports>
+        </configuration>
+        <executions>
+          <execution>
+            <id>test</id>
+            <goals>
+              <goal>test</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+	  <!-- exec:java -->
+	  <plugin> 
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <version>${exec.maven.version}</version>
+        <configuration>
+          <mainClass>${main.class}</mainClass>
+          <arguments>
+            <argument>${argument.list}</argument>
+          </arguments>
+        </configuration>
+	  </plugin>
+
+	  <!-- reporting -->
+	  <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-site-plugin</artifactId>
+        <version>${maven.site.version}</version>
+      </plugin>
+   <!--   <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-project-info-reports-plugin</artifactId>
+        <version>${maven.project.info.version}</version>
+      </plugin>
+-->
+    </plugins>
+  </build>
+
+</project>
