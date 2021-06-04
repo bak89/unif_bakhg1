@@ -2,11 +2,11 @@ package ch.bfh.ti.unif
 
 
 object Parser {
-  // Tokenizer Regex: Splits Input String into parsable tokens
+  // Regex tokenizer: input is split into parsable tokens
   private val RxTokenizer = "\\w+|[,()]".r
-  // Regex to check if current token is a Variable (starting Uppercase)
-  private val RxIsVariable = "[A-Z]+".r
-  // Regex to check if current token is a name
+  // Regex if current token is a variable (starting Uppercase)
+  private val RxIsVariable = "[A-Z]\\w*".r
+  // Regex if current token is a name
   private val RxIsName = "\\w+".r
 
   /**
@@ -14,20 +14,19 @@ object Parser {
    *
    * @param input The user Input
    */
-  def parseInput(input: String): Option[Expression] = {
+  def parseInput(input: String): Option[Term] = {
     val tokens = RxTokenizer.findAllIn(input).toList
     Logger.debug("Tokens: " + tokens)
     parseAllTokens(tokens)
   }
 
   /**
-   * Recursive Function to parse all Input tokens
+   * Recursive Functions to parse all Input tokens
    *
-   * @param compound The Compound Term to build in the current call
-   * @param tokens   The List of strings created by the tokenizer
-   * @param startAt  Index of the current token to parse
+   * @param tokens list of strings created by the tokenizer
+   * @return
    */
-  private def parseAllTokens(tokens: List[String]): Option[Expression] = {
+  private def parseAllTokens(tokens: List[String]): Option[Term] = {
     Logger.debug("*** Entry parseTokens")
     parseToken(tokens) match {
       case Some((expr, Nil)) => Some(expr)
@@ -40,12 +39,12 @@ object Parser {
     }
   }
 
-  private def parseToken(tokens: List[String]): Option[(Expression, List[String])] = {
+  private def parseToken(tokens: List[String]): Option[(Term, List[String])] = {
     tokens match {
       case head :: tail => head match {
         case "(" =>
           Logger.debug("Enter list")
-          parseArgs(tail).map { case (args, tokens) => (Args(args), tokens) }
+          parseArgs(tail).map { case (args, tokens) => (Arguments(args), tokens) }
         case _ if RxIsVariable.matches(head) =>
           Logger.debug("Variable: " + head)
           Some((Variable(head), tail))
@@ -53,7 +52,7 @@ object Parser {
           case "(" :: tail =>
             Logger.debug("Enter compound: " + head)
             parseArgs(tail)
-              .map { case (args, tokens) => (Compound(Constant(head), Args(args)), tokens) }
+              .map { case (args, tokens) => (Compound(Constant(head), Arguments(args)), tokens) }
           case _ =>
             Logger.debug("Constant: " + head)
             Some((Constant(head), tail))
@@ -65,7 +64,7 @@ object Parser {
     }
   }
 
-  private def parseArgs(tokens: List[String]): Option[(List[Expression], List[String])] = {
+  private def parseArgs(tokens: List[String]): Option[(List[Term], List[String])] = {
     parseToken(tokens) match {
       case Some((expr, tokens)) =>
         tokens match {

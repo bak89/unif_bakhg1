@@ -71,6 +71,7 @@ Thumbs.db
 .idea/tasks.xml
 .idea/compiler.xml
 .idea/codeStyleSettings.xml
+.idea/
 *.iml
 
 # Maven

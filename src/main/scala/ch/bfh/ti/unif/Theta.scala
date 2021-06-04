@@ -1,8 +1,16 @@
 package ch.bfh.ti.unif
 
-sealed trait Theta //trait = interface
+/**
+ * Interface Theta
+ */
+sealed trait Theta
 
-case class Substitutions(substitutions: Map[Variable, Expression] = Map()) extends Theta {
+/**
+ * Substitutions
+ *
+ * @param substitutions map created with variable and term return to string
+ */
+case class Substitutions(substitutions: Map[Variable, Term] = Map()) extends Theta {
   override def toString: String =
     substitutions
       .map { case (key, value) => s"$key/$value" }

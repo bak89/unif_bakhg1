@@ -11,7 +11,7 @@ object App {
   def main(args: Array[String]) {
 
     //! Enable Debugger: //////////////////////////
-    Logger.DebugEnabled = true
+    // Logger.DebugEnabled = true
     //! ///////////////////////////////////////////
 
     println()
@@ -54,10 +54,10 @@ object App {
   }
 
   @tailrec
-  def requireInput(text: String): Expression = {
+  def requireInput(text: String): Term = {
     val str = readLine(text)
     Parser.parseInput(str) match {
-      case Some(expr) => expr
+      case Some(term) => term
       case _ =>
         println("> Error while parsing\n")
         requireInput(text)
