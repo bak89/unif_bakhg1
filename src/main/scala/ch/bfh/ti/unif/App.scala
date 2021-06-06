@@ -11,7 +11,7 @@ object App {
   def main(args: Array[String]) {
 
     //! Enable Debugger: //////////////////////////
-    // Logger.DebugEnabled = true
+    Logger.DebugEnabled = true
     //! ///////////////////////////////////////////
 
     println()
