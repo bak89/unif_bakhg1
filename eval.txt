@@ -1,0 +1,29 @@
+Dear all
+
+Here are some short comments about my evaluation of your project "Unification".  As usual, my comments are short
+but you know that I am always available to provide more information if you do not agree with my marking.
+Do not hesitate to contact me if something is not clear for you.
+
+Cheers
+Olivier Biberstein
+
+
+Evaluation Criteria
+
+Points   
+
+1        GitLab invitation with maintainer rights
+1        Name of the project on GitLab as "unif_yourabbreviation1_yourabbreviation2"
+1        Use of Maven
+1        Scaladoc
+2        Scalatest
+5        Parsing of terms
+(-1) exception in case of syntax errors
+10       Implementation of the Unification algorithm
+3        Report
+1        Grammar of terms
+(-1) No grammar as required
+
+Excellent work
+
+(-2)     Total 23/25pt
